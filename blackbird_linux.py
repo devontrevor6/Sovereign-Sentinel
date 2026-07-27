@@ -107,19 +107,22 @@ def detect_targets(aps: Iterable[AccessPoint], prefixes: Iterable[str]) -> List[
     return hits
 
 
-def log_hits_and_get_path(hits: List[AccessPoint], output_dir: str) -> str | None:
+def get_log_path(output_dir: str) -> str:
+    return os.path.join(output_dir, "blackbird_hits.log")
+
+
+def log_hits(hits: List[AccessPoint], output_dir: str) -> None:
     if not hits:
-        return None
+        return
 
     os.makedirs(output_dir, exist_ok=True)
-    log_path = os.path.join(output_dir, "blackbird_hits.log")
+    log_path = get_log_path(output_dir)
     with open(log_path, "a", encoding="utf-8") as f:
         for ap in hits:
             stamp = datetime.now(timezone.utc).isoformat()
             f.write(
                 f"{stamp} | bssid={ap.bssid} | signal_dbm={ap.signal_dbm} | ssid={ap.ssid}\n"
             )
-    return log_path
 
 
 def main() -> int:
@@ -155,8 +158,8 @@ def main() -> int:
 
             hits = detect_targets(aps, prefixes)
             if hits:
-                log_path = log_hits_and_get_path(hits, args.output_dir)
-                print(f"[ALERT] {len(hits)} target network(s) detected. Logged to {log_path}")
+                log_hits(hits, args.output_dir)
+                print(f"[ALERT] {len(hits)} target network(s) detected. Logged to {get_log_path(args.output_dir)}")
             else:
                 print(f"[OK] scanned {len(aps)} networks; no targets detected")
 
