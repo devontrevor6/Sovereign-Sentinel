@@ -18,7 +18,7 @@ from typing import Any, Dict
 
 BAD_PCI = {"275", "434"}
 BAD_TAC = "5135"
-EXTREME_PROXIMITY_RSSI_THRESHOLD = -46.0  # Numerically greater RSSI (e.g., -43 > -46, less negative/stronger) is extreme proximity
+EXTREME_PROXIMITY_RSSI_THRESHOLD = -46.0  # RSSI values closer to 0 (e.g., -43 is stronger than -46) indicate extreme proximity
 
 
 def parse_cell_snapshot(payload: Any) -> Dict[str, str]:

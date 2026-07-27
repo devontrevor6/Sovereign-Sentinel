@@ -47,7 +47,7 @@ Both commands should emit `[ALERT]` with the included sample fixtures.
 
 ## Real Linux usage (Kali/Ubuntu/Debian)
 
-## Requirements
+### Requirements
 
 - Linux system with wireless tooling (`iw`) installed.
 - Root privileges are typically required for active Wi-Fi scanning.
