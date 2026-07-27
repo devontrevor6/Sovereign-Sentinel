@@ -1,0 +1,8 @@
+BSS d4:b9:2f:11:22:33(on wlan1)
+	freq: 2437
+	signal: -42.00 dBm
+	SSID: TestTarget
+BSS aa:bb:cc:44:55:66(on wlan1)
+	freq: 2462
+	signal: -77.00 dBm
+	SSID: CoffeeShop
