@@ -21,6 +21,7 @@ from datetime import datetime, timezone
 from typing import Iterable, List
 
 DEFAULT_PREFIXES = ["12:36:aa", "1e:9d:72", "d4:b9:2f", "7a:7d:a1"]
+BSSID_PATTERN = r"[0-9a-f]{2}(?::[0-9a-f]{2}){5}"
 
 
 @dataclass
@@ -34,7 +35,7 @@ def parse_iw_scan_output(text: str) -> List[AccessPoint]:
     aps: list[AccessPoint] = []
     current: AccessPoint | None = None
 
-    bss_re = re.compile(r"^BSS\s+([0-9a-fA-F:]{17})\b")
+    bss_re = re.compile(rf"^BSS\s+({BSSID_PATTERN})\b", re.IGNORECASE)
     signal_re = re.compile(r"signal:\s*(-?\d+(?:\.\d+)?)\s*dBm")
 
     for line in text.splitlines():
@@ -78,7 +79,7 @@ def load_mock_aps(mock_file: str) -> List[AccessPoint]:
             if not isinstance(item, dict):
                 continue
             bssid = str(item.get("bssid", "")).lower()
-            if not re.fullmatch(r"[0-9a-f]{2}(?::[0-9a-f]{2}){5}", bssid):
+            if not re.fullmatch(BSSID_PATTERN, bssid):
                 continue
             signal = item.get("signal_dbm")
             try:
@@ -111,9 +112,9 @@ def get_log_path(output_dir: str) -> str:
     return os.path.join(output_dir, "blackbird_hits.log")
 
 
-def log_hits(hits: List[AccessPoint], output_dir: str) -> None:
+def log_hits(hits: List[AccessPoint], output_dir: str) -> str | None:
     if not hits:
-        return
+        return None
 
     os.makedirs(output_dir, exist_ok=True)
     log_path = get_log_path(output_dir)
@@ -123,6 +124,7 @@ def log_hits(hits: List[AccessPoint], output_dir: str) -> None:
             f.write(
                 f"{stamp} | bssid={ap.bssid} | signal_dbm={ap.signal_dbm} | ssid={ap.ssid}\n"
             )
+    return log_path
 
 
 def main() -> int:
@@ -158,8 +160,8 @@ def main() -> int:
 
             hits = detect_targets(aps, prefixes)
             if hits:
-                log_hits(hits, args.output_dir)
-                print(f"[ALERT] {len(hits)} target network(s) detected. Logged to {get_log_path(args.output_dir)}")
+                log_path = log_hits(hits, args.output_dir)
+                print(f"[ALERT] {len(hits)} target network(s) detected. Logged to {log_path}")
             else:
                 print(f"[OK] scanned {len(aps)} networks; no targets detected")
 
