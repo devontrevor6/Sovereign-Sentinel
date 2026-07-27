@@ -18,6 +18,7 @@ from typing import Any, Dict
 
 BAD_PCI = {"275", "434"}
 BAD_TAC = "5135"
+CRITICAL_RSSI_THRESHOLD = -46  # RSSI above this (less negative) is treated as extreme proximity
 
 
 def parse_cell_snapshot(payload: Any) -> Dict[str, str]:
@@ -106,7 +107,7 @@ def main() -> int:
                     f"[ALERT] target match pci={snapshot['pci']} tac={snapshot['tac']} rssi={snapshot['rssi']}"
                 )
                 try:
-                    if int(float(snapshot["rssi"])) > -46:
+                    if int(float(snapshot["rssi"])) > CRITICAL_RSSI_THRESHOLD:
                         print("[CRITICAL] extreme proximity")
                 except ValueError:
                     pass

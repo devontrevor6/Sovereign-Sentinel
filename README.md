@@ -6,20 +6,20 @@ Security suite for network auditing and monitoring.
 
 This repo now includes Linux-ready scripts and hardware-free simulation paths:
 
-- `/home/runner/work/Sovereign-Sentinel/Sovereign-Sentinel/blackbird_linux.py`
+- `blackbird_linux.py`
   - Wi-Fi monitor that scans APs, matches target BSSID prefixes, and logs detections.
   - Supports real interface mode (`iw`) and mock file mode.
-- `/home/runner/work/Sovereign-Sentinel/Sovereign-Sentinel/sentinel_v4_linux.py`
+- `sentinel_v4_linux.py`
   - Proximity monitor that checks `pci/tac/rssi` snapshots and logs target matches.
   - Supports real command mode and mock JSON mode.
-- `/home/runner/work/Sovereign-Sentinel/Sovereign-Sentinel/fixtures/*`
+- `fixtures/*`
   - Sample scan data for repeatable local tests.
-- `/home/runner/work/Sovereign-Sentinel/Sovereign-Sentinel/tests/*`
+- `tests/*`
   - Unit tests for parsing and detection logic.
 
 ## Quick start (mock/simulated)
 
-Run from `/home/runner/work/Sovereign-Sentinel/Sovereign-Sentinel`.
+Run from the repository root directory.
 
 ### 1) Run tests
 

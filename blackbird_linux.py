@@ -107,7 +107,7 @@ def detect_targets(aps: Iterable[AccessPoint], prefixes: Iterable[str]) -> List[
     return hits
 
 
-def log_hits(hits: List[AccessPoint], output_dir: str) -> str | None:
+def log_hits_and_get_path(hits: List[AccessPoint], output_dir: str) -> str | None:
     if not hits:
         return None
 
@@ -155,7 +155,7 @@ def main() -> int:
 
             hits = detect_targets(aps, prefixes)
             if hits:
-                log_path = log_hits(hits, args.output_dir)
+                log_path = log_hits_and_get_path(hits, args.output_dir)
                 print(f"[ALERT] {len(hits)} target network(s) detected. Logged to {log_path}")
             else:
                 print(f"[OK] scanned {len(aps)} networks; no targets detected")
