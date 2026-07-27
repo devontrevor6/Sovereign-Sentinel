@@ -74,7 +74,7 @@ Pass a command that emits JSON with keys `pci`, `tac`, `rssi` (or a list with fi
 
 ```bash
 python3 sentinel_v4_linux.py \
-  --data-command 'echo "[{""pci"":275,""tac"":5135,""rssi"":-43}]"'
+  --data-command 'echo "[{"pci":275,"tac":5135,"rssi":-43}]"'
 ```
 
 ## Evidence and logs
